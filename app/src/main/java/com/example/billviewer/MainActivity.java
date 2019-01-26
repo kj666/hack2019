@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     //Initialize the layout components
     protected void setupUI(){
         textView = (TextView) findViewById(R.id.textView);
-        viewGradeButton = (Button) findViewById(R.id.viewGradeButton);
+        viewGradeButton = (Button) findViewById(R.id.viewAllBillsButton);
 
         //Listen if the buttons is clicked
         viewGradeButton.setOnClickListener(onClickViewGradeButton);
@@ -57,12 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            fetchData();
+//            fetchData();
+            viewBill();
+
         }
     };
 
-    private void viewGrades(){
-//        Intent intent = new Intent(this, ViewGrade.class);
-//        startActivity(intent);
+    private void viewBill(){
+        Intent intent = new Intent(this, ViewBill.class);
+        startActivity(intent);
     }
 }

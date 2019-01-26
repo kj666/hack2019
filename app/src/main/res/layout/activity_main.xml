@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="193dp"
         android:gravity="center"
-        android:text="Grade Viewer"
+        android:text="E-Bills"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
         android:textSize="24sp"
@@ -22,15 +22,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/viewGradeButton"
+        android:id="@+id/viewAllBillsButton"
         android:layout_width="176dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="261dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/colorPrimary"
-        android:text="View All Grade"
+        android:text="View All Bills"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="184dp"
+        android:text="ADD NEW BILL"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
