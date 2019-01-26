@@ -43,4 +43,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <SurfaceView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id= "@+id/camerapreview"
+        />
+
 </android.support.constraint.ConstraintLayout>
