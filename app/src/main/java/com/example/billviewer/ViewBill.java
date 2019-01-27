@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -23,6 +24,7 @@ import java.util.Random;
 
 public class ViewBill extends AppCompatActivity {
 
+    private float x1, x2, y1,y2;
 
     //Generate random Bill
     //I created my own driver function
@@ -110,6 +112,21 @@ public class ViewBill extends AppCompatActivity {
         }
     }
 
+    public boolean onTouchEvent(MotionEvent touchevent){
+        switch(touchevent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchevent.getX();
+                y1 = touchevent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = touchevent.getX();
+                y2 = touchevent.getY();
+                if(x2>1.5*x1)
+                    finish();
+                break;
+        }
+        return false;
+    }
     //convert numerical grades to letter grades
     protected String letterGrade(int grade){
         String letter = "";
@@ -173,7 +190,7 @@ public class ViewBill extends AppCompatActivity {
             TextView textView_avg = (TextView) convertView.findViewById(R.id.textView_avgGrade);
 
             textView_course.setText(bill.get(position).getBillTitle());
-            textView_course.setTextColor(Color.rgb(41, 163, 163));
+            //textView_course.setTextColor(Color.rgb(41, 163, 163));
 
             LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayoutAss);
 

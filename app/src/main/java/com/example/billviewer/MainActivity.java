@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     float x1,x2,y1,y2;
     protected Button viewGradeButton = null;
+    protected Button viewDash = null;
     protected TextView textView = null;
 
     public static final String RECEIPT_KEY = "name";
@@ -56,9 +57,11 @@ public class MainActivity extends AppCompatActivity {
             case MotionEvent.ACTION_UP:
                 x2 = touchevent.getX();
                 y2 = touchevent.getY();
-                if(x1>x2){
+                if(x1>1.5*x2){
                     viewBill();
                 }
+                else if(x2>1.5*x1)
+                    viewDash();
                 break;
         }
         return false;
@@ -81,9 +84,11 @@ public class MainActivity extends AppCompatActivity {
     protected void setupUI(){
         textView = (TextView) findViewById(R.id.textView);
         viewGradeButton = (Button) findViewById(R.id.viewAllBillsButton);
+        viewDash = (Button) findViewById(R.id.viewDash);
 
         //Listen if the buttons is clicked
         viewGradeButton.setOnClickListener(onClickViewGradeButton);
+        viewDash.setOnClickListener(onClickViewDash);
 
     }
 
@@ -97,10 +102,26 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private Button.OnClickListener onClickViewDash = new Button.OnClickListener(){
+
+        @Override
+        public void onClick(View view) {
+//          fetchData();
+            viewDash();
+
+        }
+    };
+
     private void viewBill(){
         Intent intent = new Intent(this, ViewBill.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    private void viewDash(){
+        Intent intent = new Intent(this,Dashboard.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private void viewCamera() {

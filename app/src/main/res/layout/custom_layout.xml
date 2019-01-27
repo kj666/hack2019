@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,6 +17,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="9dp"
         android:text="TextView"
+        android:textColor="#FF4CAF56"
         android:textSize="30sp" />
 
     <TextView
@@ -29,6 +31,7 @@
         android:layout_marginEnd="182dp"
         android:layout_marginRight="182dp"
         android:text="Total:"
+        android:textColor="#000000"
         tools:text="Total:" />
 
     <TextView
@@ -41,7 +44,9 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="154dp"
         android:layout_marginRight="154dp"
-        android:text="100" />
+        android:text="100"
+        android:textColor="#000000"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/linearLayoutAss"
