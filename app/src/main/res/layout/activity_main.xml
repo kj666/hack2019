@@ -23,30 +23,35 @@
 
     <Button
         android:id="@+id/viewAllBillsButton"
-        android:layout_width="176dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@color/colorPrimary"
-        android:text="View All Bills"
+        android:alpha="0.70"
+        android:layout_width="69dp"
+        android:layout_height="69dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/google_docs"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="176dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="184dp"
-        android:text="ADD NEW BILL"
+        android:id="@+id/viewDash"
+        android:alpha="0.70"
+        android:layout_width="69dp"
+        android:layout_height="69dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/graph"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent" />
 
     <SurfaceView
+        android:id="@+id/camerapreview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id= "@+id/camerapreview"
-        />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </android.support.constraint.ConstraintLayout>
