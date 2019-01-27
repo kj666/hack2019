@@ -27,15 +27,21 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    float x1,x2,y1,y2;
+    float x1, x2, y1, y2;
     protected Button viewGradeButton = null;
     protected Button viewDash = null;
     protected TextView textView = null;
     protected static String QRcode;
+    SurfaceView surfaceView;
+    CameraSource cameraSource;
+    TextView txtView;
+    BarcodeDetector barcodeDetector;
 
     public static final String RECEIPT_KEY = "name";
     private CollectionReference receiptRef = FirebaseFirestore.getInstance().collection("receipt");
@@ -49,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         viewCamera();
     }
 
-    public boolean onTouchEvent(MotionEvent touchevent){
-        switch(touchevent.getAction()){
+    public boolean onTouchEvent(MotionEvent touchevent) {
+        switch (touchevent.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 x1 = touchevent.getX();
                 y1 = touchevent.getY();
@@ -58,22 +64,21 @@ public class MainActivity extends AppCompatActivity {
             case MotionEvent.ACTION_UP:
                 x2 = touchevent.getX();
                 y2 = touchevent.getY();
-                if(x1>1.5*x2){
+                if (x1 > 1.5 * x2) {
                     viewBill();
-                }
-                else if(x2>1.5*x1)
+                } else if (x2 > 1.5 * x1)
                     viewDash();
                 break;
         }
         return false;
     }
 
-    public void fetchData(){
+    public void fetchData() {
         DocumentReference docRef = receiptRef.document("1");
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
+                if (documentSnapshot.exists()) {
                     String receipt = documentSnapshot.getString(RECEIPT_KEY);
                     textView.setText(receipt);
                 }
@@ -82,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Initialize the layout components
-    protected void setupUI(){
+    protected void setupUI() {
         textView = (TextView) findViewById(R.id.textView);
         viewGradeButton = (Button) findViewById(R.id.viewAllBillsButton);
         viewDash = (Button) findViewById(R.id.viewDash);
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private Button.OnClickListener onClickViewGradeButton = new Button.OnClickListener(){
+    private Button.OnClickListener onClickViewGradeButton = new Button.OnClickListener() {
 
         @Override
         public void onClick(View view) {
@@ -103,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private Button.OnClickListener onClickViewDash = new Button.OnClickListener(){
+    private Button.OnClickListener onClickViewDash = new Button.OnClickListener() {
 
         @Override
         public void onClick(View view) {
@@ -113,26 +118,22 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void viewBill(){
+    private void viewBill() {
         Intent intent = new Intent(this, ViewBill.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    private void viewDash(){
-        Intent intent = new Intent(this,Dashboard.class);
+    private void viewDash() {
+        Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private void viewCamera() {
 
-
-        final CameraSource cameraSource;
-        BarcodeDetector barcodeDetector;
-        SurfaceView surfaceView;
-
         surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
+
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.QR_CODE).build();
 
@@ -143,19 +144,19 @@ public class MainActivity extends AppCompatActivity {
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                try{
+                try {
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
                     cameraSource.start(holder);
-                }catch(IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -179,29 +180,32 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
-                SparseArray<Barcode> qrCodes = detections.getDetectedItems();
+                    final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
-                if(qrCodes.size() != 0){
+                    while(qrCodes.size() ==1){
+//                        try {
+//                            Thread.sleep(3000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
 
-//                    cameraSource.stop();
-
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-
+                                String QR_CODE = qrCodes.valueAt(0).displayValue;
+                                if(QR_CODE.matches("\\d+"))
+                                {
+                                    //cameraSource.stop();
+                                    Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
+                                    intent.putExtra("BillID", QR_CODE);
+                                    startActivity(intent);
+                                    //Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                    //vibrator.vibrate(500);
+                                    // Yes it matches
+                                    break;
+                                }
+                                qrCodes.clear();
                     }
-                    Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(500);
-                    QRcode = qrCodes.valueAt(qrCodes.size()-1).displayValue;
+                    }
 
-                    viewBill();
-
-                }
-            }
-
-            public  String getQR(){
-                return QRcode;
-            }
         });
+
     }
 }

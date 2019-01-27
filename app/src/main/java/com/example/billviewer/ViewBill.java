@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -46,17 +47,17 @@ public class ViewBill extends AppCompatActivity {
 
     //Generate random Bill
     //I created my own driver function
-    static protected ArrayList<Bill> generateBillArr(){
-        Random rand = new Random();
-        int billNo = rand.nextInt(5);
-        ArrayList<Bill> tempBill = new ArrayList<Bill>();
-        Bill.resetBillID();
-        for(int i = 0; i< billNo; i++){
-            Item.resetAssID();
-            tempBill.add(Bill.generateRandomBill());
-        }
-        return tempBill;
-    }
+//    static protected ArrayList<Bill> generateBillArr(){
+//        Random rand = new Random();
+//        int billNo = rand.nextInt(5);
+//        ArrayList<Bill> tempBill = new ArrayList<Bill>();
+//        Bill.resetBillID();
+//        for(int i = 0; i< billNo; i++){
+//            Item.resetAssID();
+//            tempBill.add(Bill.generateRandomBill());
+//        }
+//        return tempBill;
+//    }
 
     public ArrayList<Bill> bill = new ArrayList<Bill>();
 
@@ -69,6 +70,7 @@ public class ViewBill extends AppCompatActivity {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 Log.d("receipts", document.getId() + "=>" + document.getData().get("items"));
+                                int id = Integer.parseInt(document.getId());
                                 String name = document.getString("name");
                                 Map<String,Map<String, String>> sample= (Map<String, Map<String, String>>) document.getData().get("items");
                                 //Map<String,Map<String,String>> extract = (Map<String, Map<String, String>>) document.get("items");
@@ -82,7 +84,7 @@ public class ViewBill extends AppCompatActivity {
                                     Log.d("key", title + price);
                                 }
 
-                                Bill billO = new Bill(name, pass, 3);
+                                Bill billO = new Bill(id, name, pass);
                                 bill.add(billO);
 
                             }
@@ -132,6 +134,11 @@ public class ViewBill extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private void viewSingleBill(String id){
+        Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
+        intent.putExtra("BillID", id);
+        startActivity(intent);
+    }
 
     protected void setup(){
         LinearLayout listLayout = (LinearLayout) findViewById(R.id.listViewLinearLayout);
@@ -157,6 +164,14 @@ public class ViewBill extends AppCompatActivity {
         else{
             //create list view
             ListView listView = new ListView(getApplicationContext());
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    int billId = bill.get(position).getBillID();
+                    viewSingleBill(billId+"");
+                }
+            });
             //adapter for layout inside listview
             CustomAdapter customAdapter = new CustomAdapter();
             //call custom layout for each element of the listview
@@ -204,69 +219,13 @@ public class ViewBill extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.custom_layout, null);
-            int layoutHeight = 0;
             TextView textView_course = (TextView) convertView.findViewById(R.id.textView_course);
             TextView textView_avg = (TextView) convertView.findViewById(R.id.textView_avgGrade);
 
             textView_course.setText(bill.get(position).getBillTitle());
-            //textView_course.setTextColor(Color.rgb(41, 163, 163));
-
-            LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayoutAss);
-
-            //check if assignments are empty
-            if (bill.get(position).getItems().isEmpty()) {
-                textView_avg.setText("--");
-                //Create new text View for message
-                TextView emptyMsg = new TextView(getApplicationContext());
-                emptyMsg.setText("There is no item");
-                emptyMsg.setTextColor(Color.RED);
-                emptyMsg.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.FILL_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-                linearLayout.addView(emptyMsg);
-                linearLayout.getLayoutParams().height = 80;
-            }
-
-            else {
-                for (int i = 0; i < bill.get(position).getItems().size(); i++) {
-                    TextView assign = new TextView(getApplicationContext());
-                    assign.setText(bill.get(position).getItems().get(i).getItemTitle() + "                             " + bill.get(position).getItems().get(i).getPrice());
-                    textView_avg.setText(String.valueOf(bill.get(position).getTotal()));
-
-                    assign.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.FILL_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-                    //Add the textView to the linear layout
-                    linearLayout.addView(assign);
-                    //extend linear layout for every textView inserted
-                    layoutHeight += 75;
-                }
-                linearLayout.getLayoutParams().height = layoutHeight;
-                linearLayout.getLayoutParams().width = 900;
-            }
-
-            convertView.setOnClickListener(onClickListener);
-
+            textView_avg.setText(bill.get(position).getFinalTotal()+"");
 
             return convertView;
-        }
-//        private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                event.
-//                return false;
-//            }
-//        }
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewSingleBill();
-            }
-        };
-
-        private void viewSingleBill(){
-            Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
-            startActivity(intent);
         }
     }
 
