@@ -1,5 +1,6 @@
 package com.example.billviewer;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.ColorLong;
@@ -30,7 +31,7 @@ public class ViewBill extends AppCompatActivity {
     //I created my own driver function
     static protected ArrayList<Bill> generateBillArr(){
         Random rand = new Random();
-        int billNo = rand.nextInt(5);
+        int billNo = rand.nextInt(20);
         ArrayList<Bill> tempBill = new ArrayList<Bill>();
         Bill.resetBillID();
         for(int i = 0; i< billNo; i++){
@@ -236,7 +237,8 @@ public class ViewBill extends AppCompatActivity {
     }
 
     public void finish(){
-        super.finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right );
     }
 }

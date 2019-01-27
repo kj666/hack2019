@@ -58,6 +58,7 @@
         android:layout_marginStart="57dp"
         android:layout_marginLeft="57dp"
         android:layout_marginTop="54dp"
-        android:orientation="vertical"/>
+        android:clickable="false"
+        android:orientation="vertical" />
 
 </RelativeLayout>

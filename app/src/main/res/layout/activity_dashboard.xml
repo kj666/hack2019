@@ -7,7 +7,7 @@
     tools:context=".Dashboard">
 
     <Button
-        android:id="@+id/viewAllBillsButton"
+        android:id="@+id/viewAllBillsButton_dash"
         android:alpha="0.50"
         android:layout_width="69dp"
         android:layout_height="69dp"
@@ -19,17 +19,14 @@
         app:layout_constraintHorizontal_bias="0.943"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/viewDash"
-        android:alpha="0.50"
-        android:layout_width="69dp"
-        android:layout_height="69dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/graph"
-        android:textColor="@android:color/background_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
-        app:layout_constraintStart_toStartOf="parent" />
+    <lecho.lib.hellocharts.view.PieChartView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:filterTouchesWhenObscured="true"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+
 
 </android.support.constraint.ConstraintLayout>
