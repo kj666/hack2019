@@ -3,38 +3,41 @@ package com.example.billviewer;
 import java.util.Random;
 
 public class Item {
-    private static int assID = 1;
-    private String itemTitle;
-    private int itemGrade;
+    private static int itemID = 1;
+    private String item;
+    private double price;
+    private String type;
 
-    private Item(String title, int grade){
-        itemTitle = title;
-        itemGrade = grade;
-        assID++;
+    public Item(String title, double pri){
+        item = title;
+        price = pri;
     }
 
     static public Item generateRandomAssignment(){
         Random rand = new Random();
-        String tempTitle = "Item "+ assID;
+        String tempTitle = "Item "+ itemID;
         int tempGrade = rand.nextInt(100) +1;
 
         return new Item(tempTitle, tempGrade);
     }
 
     public String getItemTitle(){
-        return itemTitle;
+        return item;
     }
 
-    public int getItemGrade() {
-        return itemGrade;
+    public double getPrice() {
+        return price;
     }
 
     public int getAssID() {
-        return assID;
+        return itemID;
     }
 
     static public void resetAssID(){
-        assID = 1;
+        itemID = 1;
     }
 
+    public void setItemID(int id){
+        itemID = id;
+    }
 }

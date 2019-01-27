@@ -1,13 +1,17 @@
 package com.example.billviewer;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.ColorLong;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -18,10 +22,25 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class ViewBill extends AppCompatActivity {
+
+    private CollectionReference billRef = FirebaseFirestore.getInstance().collection("receipt");
+
 
 
     //Generate random Bill
@@ -38,7 +57,41 @@ public class ViewBill extends AppCompatActivity {
         return tempBill;
     }
 
-    ArrayList<Bill> bill = generateBillArr();
+    public ArrayList<Bill> bill = new ArrayList<Bill>();
+
+
+    public void getData(){
+        billRef.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot document: task.getResult()){
+                                Log.d("receipts", document.getId() + "=>" + document.getData().get("items"));
+                                String name = document.getString("name");
+                                Map<String,Map<String, String>> sample= (Map<String, Map<String, String>>) document.getData().get("items");
+                                //Map<String,Map<String,String>> extract = (Map<String, Map<String, String>>) document.get("items");
+                                ArrayList<Item> pass = new ArrayList<Item>();
+                                for (String key :sample.keySet()){
+                                    String title= sample.get(key).get("item");
+                                    Double price =Double.parseDouble(sample.get(key).get("price"));
+                                    Item something = new Item(title,price);
+                                    pass.add(something);
+                                    Log.d("receipts", "heelo");
+                                    Log.d("key", title + price);
+                                }
+
+                                Bill billO = new Bill(name, pass, 3);
+                                bill.add(billO);
+
+                            }
+                        }
+                        setup();
+                    }
+                });
+    }
+
+
     //boolean to know how grade are displayed true = letter, false = numeric
     boolean letterGradeDisplay = false;
 
@@ -46,8 +99,10 @@ public class ViewBill extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_bill);
-        setup();
+        getData();
+
     }
+
 
     //create option menu
     @Override
@@ -110,41 +165,6 @@ public class ViewBill extends AppCompatActivity {
         }
     }
 
-    //convert numerical grades to letter grades
-    protected String letterGrade(int grade){
-        String letter = "";
-        if(grade >= 90)
-            letter = "A+";
-        else if(grade >= 85 && grade <= 89)
-            letter = "A";
-        else if(grade >= 80 && grade <= 84)
-            letter = "A-";
-        else if(grade >= 77 && grade <= 79)
-            letter = "B+";
-        else if(grade >= 73 && grade <= 76)
-            letter = "B";
-        else if(grade >= 70 && grade <= 72)
-            letter = "B-";
-        else if(grade >= 67 && grade <= 69)
-            letter = "C+";
-        else if(grade >= 63 && grade <= 66)
-            letter = "C";
-        else if(grade >= 60 && grade <= 62)
-            letter = "C-";
-        else if(grade >= 57 && grade <= 59)
-            letter = "D+";
-        else if(grade >= 53 && grade <= 56)
-            letter = "D";
-        else if(grade >= 50 && grade <= 52)
-            letter = "D-";
-        else if( grade < 49)
-            letter = "F";
-        else
-            letter = "";
-
-        return letter;
-    }
-
 
     //Edit element of each row of listView
     class CustomAdapter extends BaseAdapter{
@@ -178,7 +198,7 @@ public class ViewBill extends AppCompatActivity {
             LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayoutAss);
 
             //check if assignments are empty
-            if (bill.get(position).getAssignments().isEmpty()) {
+            if (bill.get(position).getItems().isEmpty()) {
                 textView_avg.setText("--");
                 //Create new text View for message
                 TextView emptyMsg = new TextView(getApplicationContext());
@@ -192,16 +212,11 @@ public class ViewBill extends AppCompatActivity {
             }
 
             else {
-                for (int i = 0; i < bill.get(position).getAssignments().size(); i++) {
+                for (int i = 0; i < bill.get(position).getItems().size(); i++) {
                     TextView assign = new TextView(getApplicationContext());
-                    if(!letterGradeDisplay) {
-                        assign.setText(bill.get(position).getAssignments().get(i).getItemTitle() + "                             " + bill.get(position).getAssignments().get(i).getItemGrade());
-                        textView_avg.setText(String.valueOf(bill.get(position).getTotal()));
-                    }
-                    else {
-                        assign.setText(bill.get(position).getAssignments().get(i).getItemTitle() + "                              " + letterGrade(bill.get(position).getAssignments().get(i).getItemGrade()));
-                        textView_avg.setText(String.valueOf(letterGrade(bill.get(position).getTotal())));
-                    }
+                    assign.setText(bill.get(position).getItems().get(i).getItemTitle() + "                             " + bill.get(position).getItems().get(i).getPrice());
+                    textView_avg.setText(String.valueOf(bill.get(position).getTotal()));
+
                     assign.setLayoutParams(new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.FILL_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -214,7 +229,28 @@ public class ViewBill extends AppCompatActivity {
                 linearLayout.getLayoutParams().width = 900;
             }
 
+            convertView.setOnClickListener(onClickListener);
+
+
             return convertView;
+        }
+//        private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                event.
+//                return false;
+//            }
+//        }
+        private View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewSingleBill();
+            }
+        };
+
+        private void viewSingleBill(){
+            Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
+            startActivity(intent);
         }
     }
 }

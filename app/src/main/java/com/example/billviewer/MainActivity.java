@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected Button viewGradeButton = null;
     protected TextView textView = null;
+    protected static String QRcode;
 
     public static final String RECEIPT_KEY = "name";
     private CollectionReference receiptRef = FirebaseFirestore.getInstance().collection("receipt");
@@ -141,17 +142,24 @@ public class MainActivity extends AppCompatActivity {
 
                 if(qrCodes.size() != 0){
 
+//                    cameraSource.stop();
+
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(1);
                     } catch (InterruptedException e) {
-                        \
+
                     }
                     Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(1000);
+                    vibrator.vibrate(500);
+                    QRcode = qrCodes.valueAt(qrCodes.size()-1).displayValue;
 
                     viewBill();
 
                 }
+            }
+
+            public  String getQR(){
+                return QRcode;
             }
         });
     }
