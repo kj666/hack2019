@@ -1,71 +1,77 @@
 package com.example.billviewer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 public class Bill {
 
     private int billID;
     private String name;
-    private double totalPrice;
+    private double total;
     private ArrayList<Item> items;
+    private String address;
+    private Date date;
+    private String phone;
+    private String type;
 
-    public Bill(int billI, String title, ArrayList<Item> item, int sum){
+
+    public Bill(int billI, String title, ArrayList<Item> item){
         billID = billI;
         name = title;
         items = item;
-        totalPrice = sum;
+        total = getTotal(item);
+    }
+    public double getTotal(ArrayList<Item> items){
+        double tempTotal = 0;
+        for(int i = 0; i <items.size(); i++){
+            tempTotal += items.get(i).getPrice();
+        }
+        return tempTotal;
     }
 
-//    static public Bill generateRandomBills(String title){
-//        Random rand = new Random();
-//        int assignmentNo = rand.nextInt(10);
-//        ArrayList<Item> tempAssign = new ArrayList<Item>();
-//        int tempSum = 0;
-//        double sum = 0;
-//        for(int i = 0; i< assignmentNo; i++){
-//            tempAssign.add(Item.generateRandomAssignment());
-//        }
-//        //compute the total of assignments
-//        for(int i = 0; i< tempAssign.size(); i++){
-//            tempSum += tempAssign.get(i).getPrice();
-//        }
-//        if (assignmentNo != 0){
-//            sum = (tempSum);
-//        }
-//
-//        return new Bill(title, tempAssign, (int)Math.round(sum));
-//    }
+    public double getFinalTotal(){
+        return total;
+    }
 
+    public String getType() {
+        return type;
+    }
 
-//    static public Bill generateRandomBill(){
-//        Random rand = new Random();
-//        int assignmentNo = rand.nextInt(10);
-//        ArrayList<Item> tempAssign = new ArrayList<Item>();
-//        int tempSum = 0;
-//        double sum = 0;
-//        for(int i = 0; i< assignmentNo; i++){
-//            tempAssign.add(Item.generateRandomAssignment());
-//        }
-//        //compute the total of assignments
-//        for(int i = 0; i< tempAssign.size(); i++){
-//            tempSum += tempAssign.get(i).getPrice();
-//        }
-//        if (assignmentNo != 0){
-//            sum = (tempSum);
-//        }
-//
-//        return new Bill("Bill " + billID, tempAssign, (int)Math.round(sum));
-//    }
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getBillTitle() {
         return name;
     }
 
     public double getTotal() {
-        return totalPrice;
+        return total;
     }
-
-    //Reset the course ID when activities ends
 
     public ArrayList<Item> getItems() {
         return items;

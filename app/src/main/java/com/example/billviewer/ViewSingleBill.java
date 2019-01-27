@@ -1,5 +1,6 @@
 package com.example.billviewer;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ public class ViewSingleBill extends AppCompatActivity {
                             Log.d("receipts", "heelo");
                             Log.d("key", title + price);
                         }
-                        singleBille = new Bill( id, name,pass, 4);
+                        singleBille = new Bill( id, name,pass);
                     }else{
                         Log.d("ERROR", "No such document");
                     }
@@ -98,9 +99,55 @@ public class ViewSingleBill extends AppCompatActivity {
 
     protected void setup(){
         RelativeLayout singleBillLaout = (RelativeLayout) findViewById(R.id.RelativeLayoutSingleBill);
+        int layoutHeight = 0;
         TextView textView_Store = (TextView) findViewById(R.id.textView_store);
         TextView textView_Total = (TextView) findViewById(R.id.textView_totalSingle);
         textView_Store.setText(singleBille.getBillTitle());
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayoutAss);
+        LinearLayout linearLayoutPrice = (LinearLayout) findViewById(R.id.linearLayoutPrice);
+
+
+        //check if assignments are empty
+        if (singleBille.getItems().isEmpty()) {
+            textView_Total.setText("--");
+            //Create new text View for message
+            TextView emptyMsg = new TextView(getApplicationContext());
+            emptyMsg.setText("There is no item");
+            emptyMsg.setTextColor(Color.RED);
+            emptyMsg.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.FILL_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            linearLayout.addView(emptyMsg);
+            linearLayout.getLayoutParams().height = 80;
+        }
+
+        else {
+            for (int i = 0; i < singleBille.getItems().size(); i++) {
+                TextView assign = new TextView(getApplicationContext());
+                assign.setText(singleBille.getItems().get(i).getItemTitle());
+
+                TextView price = new TextView(getApplicationContext());
+                price.setText(Double.toString(singleBille.getItems().get(i).getPrice()));
+
+                textView_Total.setText(String.valueOf(singleBille.getTotal()));
+
+                assign.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.FILL_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                price.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.FILL_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                //Add the textView to the linear layout
+                linearLayout.addView(assign);
+                linearLayoutPrice.addView(price);
+                //extend linear layout for every textView inserted
+                layoutHeight += 75;
+            }
+            linearLayout.getLayoutParams().height = layoutHeight;
+            linearLayoutPrice.getLayoutParams().height = layoutHeight;
+            linearLayout.getLayoutParams().width = 500;
+        }
 
 
     }
