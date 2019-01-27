@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,8 +16,13 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="9dp"
+        android:clickable="true"
         android:text="TextView"
-        android:textSize="30sp" />
+        android:textAllCaps="false"
+        android:textColor="#FF4CAF50"
+        android:textSize="30sp"
+        app:fontFamily="@font/arima_madurai" />
+
 
     <TextView
         android:id="@+id/textView_average"
@@ -26,9 +32,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="21dp"
-        android:layout_marginEnd="182dp"
-        android:layout_marginRight="182dp"
+        android:layout_marginEnd="74dp"
+        android:layout_marginRight="74dp"
         android:text="Total:"
+        android:textColor="@android:color/black"
         tools:text="Total:" />
 
     <TextView
@@ -38,10 +45,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="154dp"
-        android:layout_marginRight="154dp"
-        android:text="100" />
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:text="100"
+        android:textColor="@android:color/black" />
 
     <LinearLayout
         android:id="@+id/linearLayoutAss"
@@ -53,6 +61,6 @@
         android:layout_marginStart="57dp"
         android:layout_marginLeft="57dp"
         android:layout_marginTop="54dp"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
 </RelativeLayout>

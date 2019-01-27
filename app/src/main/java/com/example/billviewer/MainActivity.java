@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
-                        \
+
                     }
                     Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                     vibrator.vibrate(1000);

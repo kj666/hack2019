@@ -173,7 +173,7 @@ public class ViewBill extends AppCompatActivity {
             TextView textView_avg = (TextView) convertView.findViewById(R.id.textView_avgGrade);
 
             textView_course.setText(bill.get(position).getBillTitle());
-            textView_course.setTextColor(Color.rgb(41, 163, 163));
+//            getBillTitltextView_course.setTextColor(Color.rgb(41, 163, 163));
 
             LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayoutAss);
 
