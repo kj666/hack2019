@@ -84,7 +84,7 @@ public class ViewBill extends AppCompatActivity {
                                     Log.d("key", title + price);
                                 }
 
-                                Bill billO = new Bill(id, name, pass, 3);
+                                Bill billO = new Bill(id, name, pass);
                                 bill.add(billO);
 
                             }
@@ -219,46 +219,11 @@ public class ViewBill extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.custom_layout, null);
-            int layoutHeight = 0;
             TextView textView_course = (TextView) convertView.findViewById(R.id.textView_course);
             TextView textView_avg = (TextView) convertView.findViewById(R.id.textView_avgGrade);
 
             textView_course.setText(bill.get(position).getBillTitle());
-            //textView_course.setTextColor(Color.rgb(41, 163, 163));
-
-            LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayoutAss);
-
-            //check if assignments are empty
-            if (bill.get(position).getItems().isEmpty()) {
-                textView_avg.setText("--");
-                //Create new text View for message
-                TextView emptyMsg = new TextView(getApplicationContext());
-                emptyMsg.setText("There is no item");
-                emptyMsg.setTextColor(Color.RED);
-                emptyMsg.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.FILL_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-                linearLayout.addView(emptyMsg);
-                linearLayout.getLayoutParams().height = 80;
-            }
-
-            else {
-                for (int i = 0; i < bill.get(position).getItems().size(); i++) {
-                    TextView assign = new TextView(getApplicationContext());
-                    assign.setText(bill.get(position).getItems().get(i).getItemTitle() + "                             " + bill.get(position).getItems().get(i).getPrice());
-                    textView_avg.setText(String.valueOf(bill.get(position).getTotal()));
-
-                    assign.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.FILL_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-                    //Add the textView to the linear layout
-                    linearLayout.addView(assign);
-                    //extend linear layout for every textView inserted
-                    layoutHeight += 75;
-                }
-                linearLayout.getLayoutParams().height = layoutHeight;
-                linearLayout.getLayoutParams().width = 900;
-            }
+            textView_avg.setText(bill.get(position).getFinalTotal()+"");
 
             return convertView;
         }
