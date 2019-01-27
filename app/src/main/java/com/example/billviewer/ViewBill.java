@@ -46,17 +46,17 @@ public class ViewBill extends AppCompatActivity {
 
     //Generate random Bill
     //I created my own driver function
-    static protected ArrayList<Bill> generateBillArr(){
-        Random rand = new Random();
-        int billNo = rand.nextInt(5);
-        ArrayList<Bill> tempBill = new ArrayList<Bill>();
-        Bill.resetBillID();
-        for(int i = 0; i< billNo; i++){
-            Item.resetAssID();
-            tempBill.add(Bill.generateRandomBill());
-        }
-        return tempBill;
-    }
+//    static protected ArrayList<Bill> generateBillArr(){
+//        Random rand = new Random();
+//        int billNo = rand.nextInt(5);
+//        ArrayList<Bill> tempBill = new ArrayList<Bill>();
+//        Bill.resetBillID();
+//        for(int i = 0; i< billNo; i++){
+//            Item.resetAssID();
+//            tempBill.add(Bill.generateRandomBill());
+//        }
+//        return tempBill;
+//    }
 
     public ArrayList<Bill> bill = new ArrayList<Bill>();
 
@@ -69,6 +69,7 @@ public class ViewBill extends AppCompatActivity {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 Log.d("receipts", document.getId() + "=>" + document.getData().get("items"));
+                                int id = Integer.parseInt(document.getId());
                                 String name = document.getString("name");
                                 Map<String,Map<String, String>> sample= (Map<String, Map<String, String>>) document.getData().get("items");
                                 //Map<String,Map<String,String>> extract = (Map<String, Map<String, String>>) document.get("items");
@@ -82,7 +83,7 @@ public class ViewBill extends AppCompatActivity {
                                     Log.d("key", title + price);
                                 }
 
-                                Bill billO = new Bill(name, pass, 3);
+                                Bill billO = new Bill(id, name, pass, 3);
                                 bill.add(billO);
 
                             }
@@ -184,6 +185,14 @@ public class ViewBill extends AppCompatActivity {
 
     //Edit element of each row of listView
     class CustomAdapter extends BaseAdapter{
+        public String currentId;
+
+
+        private void viewSingleBill(String id){
+            Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
+            intent.putExtra("BillID", id);
+            startActivity(intent);
+        }
 
         @Override
         public int getCount() {
@@ -244,30 +253,24 @@ public class ViewBill extends AppCompatActivity {
                 linearLayout.getLayoutParams().height = layoutHeight;
                 linearLayout.getLayoutParams().width = 900;
             }
+            this.currentId = "" + bill.get(position).getBillID();
+            convertView.setTag(currentId);
 
-            convertView.setOnClickListener(onClickListener);
+            convertView.OnItemClickListener();
+            
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = (Integer)v.getTag();
+                    viewSingleBill(position+"");
+                }
+            });
 
 
             return convertView;
         }
-//        private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                event.
-//                return false;
-//            }
-//        }
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewSingleBill();
-            }
-        };
 
-        private void viewSingleBill(){
-            Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
-            startActivity(intent);
-        }
+
     }
 
     public void finish(){
