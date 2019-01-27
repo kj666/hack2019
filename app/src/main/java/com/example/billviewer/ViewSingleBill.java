@@ -1,10 +1,13 @@
 package com.example.billviewer;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ViewSingleBill extends AppCompatActivity {
+
+
 
     String QRCode = MainActivity.QRcode;
 
@@ -95,6 +100,11 @@ public class ViewSingleBill extends AppCompatActivity {
         String id = getIntent().getStringExtra("BillID");
 
         getData(id);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
     }
 
     protected void setup(){

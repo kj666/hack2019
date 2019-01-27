@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
     private void viewCamera() {
 
         surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
-        txtView = (TextView) findViewById(R.id.txtview);
 
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.QR_CODE).build();
@@ -183,22 +182,27 @@ public class MainActivity extends AppCompatActivity {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                     final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
-                    if(qrCodes.size() != 0){
+                    while(qrCodes.size() ==1){
+//                        try {
+//                            Thread.sleep(3000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
 
                                 String QR_CODE = qrCodes.valueAt(0).displayValue;
-                                //if (QR_CODE.matches("\\d+"))
-                                //{
+                                if(QR_CODE.matches("\\d+"))
+                                {
+                                    //cameraSource.stop();
                                     Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
                                     intent.putExtra("BillID", QR_CODE);
                                     startActivity(intent);
-
-                                    Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                                    vibrator.vibrate(1000);
-                                    textView.setText("hi");
+                                    //Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                    //vibrator.vibrate(500);
                                     // Yes it matches
-                                //}
-
-                            }
+                                    break;
+                                }
+                                qrCodes.clear();
+                    }
                     }
 
         });
