@@ -253,11 +253,10 @@ public class ViewBill extends AppCompatActivity {
                 linearLayout.getLayoutParams().height = layoutHeight;
                 linearLayout.getLayoutParams().width = 900;
             }
+
             this.currentId = "" + bill.get(position).getBillID();
             convertView.setTag(currentId);
 
-            convertView.OnItemClickListener();
-            
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

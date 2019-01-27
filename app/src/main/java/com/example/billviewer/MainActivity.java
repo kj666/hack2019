@@ -194,7 +194,10 @@ public class MainActivity extends AppCompatActivity {
                     vibrator.vibrate(500);
                     QRcode = qrCodes.valueAt(qrCodes.size()-1).displayValue;
 
-                    viewBill();
+                    Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
+                    intent.putExtra("BillID", QRcode);
+                    startActivity(intent);
+
 
                 }
             }
