@@ -12,10 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ViewSingleBill"></activity>
         <activity
             android:name=".ViewCamera"
             android:label="@string/title_activity_view_camera"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Dashboard"></activity>
         <activity
             android:name=".ViewBill"
             android:parentActivityName=".MainActivity" />
@@ -30,6 +32,9 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
