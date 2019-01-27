@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -133,6 +134,11 @@ public class ViewBill extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private void viewSingleBill(String id){
+        Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
+        intent.putExtra("BillID", id);
+        startActivity(intent);
+    }
 
     protected void setup(){
         LinearLayout listLayout = (LinearLayout) findViewById(R.id.listViewLinearLayout);
@@ -158,6 +164,14 @@ public class ViewBill extends AppCompatActivity {
         else{
             //create list view
             ListView listView = new ListView(getApplicationContext());
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    int billId = bill.get(position).getBillID();
+                    viewSingleBill(billId+"");
+                }
+            });
             //adapter for layout inside listview
             CustomAdapter customAdapter = new CustomAdapter();
             //call custom layout for each element of the listview
@@ -185,14 +199,6 @@ public class ViewBill extends AppCompatActivity {
 
     //Edit element of each row of listView
     class CustomAdapter extends BaseAdapter{
-        public String currentId;
-
-
-        private void viewSingleBill(String id){
-            Intent intent = new Intent(getApplicationContext(), ViewSingleBill.class);
-            intent.putExtra("BillID", id);
-            startActivity(intent);
-        }
 
         @Override
         public int getCount() {
@@ -253,24 +259,9 @@ public class ViewBill extends AppCompatActivity {
                 linearLayout.getLayoutParams().height = layoutHeight;
                 linearLayout.getLayoutParams().width = 900;
             }
-            this.currentId = "" + bill.get(position).getBillID();
-            convertView.setTag(currentId);
-
-            convertView.OnItemClickListener();
-            
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = (Integer)v.getTag();
-                    viewSingleBill(position+"");
-                }
-            });
-
 
             return convertView;
         }
-
-
     }
 
     public void finish(){
