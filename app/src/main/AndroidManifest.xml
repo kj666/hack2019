@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.billviewer">
 
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -17,6 +17,7 @@
             android:name=".ViewCamera"
             android:label="@string/title_activity_view_camera"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Dashboard"></activity>
         <activity
             android:name=".ViewBill"
             android:parentActivityName=".MainActivity" />
@@ -31,6 +32,9 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

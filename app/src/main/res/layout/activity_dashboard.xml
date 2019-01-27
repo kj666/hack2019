@@ -2,28 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="193dp"
-        android:gravity="center"
-        android:text="E-Bills"
-        android:textAllCaps="false"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".Dashboard">
 
     <Button
         android:id="@+id/viewAllBillsButton"
-        android:alpha="0.70"
+        android:alpha="0.50"
         android:layout_width="69dp"
         android:layout_height="69dp"
         android:layout_marginBottom="16dp"
@@ -36,7 +21,7 @@
 
     <Button
         android:id="@+id/viewDash"
-        android:alpha="0.70"
+        android:alpha="0.50"
         android:layout_width="69dp"
         android:layout_height="69dp"
         android:layout_marginBottom="16dp"
@@ -46,12 +31,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <SurfaceView
-        android:id="@+id/camerapreview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
 
 </android.support.constraint.ConstraintLayout>
